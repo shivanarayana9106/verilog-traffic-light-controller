@@ -20,7 +20,9 @@ This project implements a two-road Traffic Light Controller using Verilog HDL. T
 | S1 | Yellow | Red | 8 Clock Cycles |
 | S2 | Red | Green | 15 Clock Cycles |
 | S3 | Red | Yellow | 8 Clock Cycles |
+
 ![Uploading image.png…]()
+
 
 ## Inputs
 - `clk` : System Clock
