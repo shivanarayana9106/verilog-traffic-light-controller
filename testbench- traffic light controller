@@ -1,0 +1,52 @@
+`timescale 1ns / 1ps
+
+module trafficlight_tb;
+
+    reg clk;
+    reg reset;
+
+    wire a_red;
+    wire a_yellow;
+    wire a_green;
+    wire b_red;
+    wire b_yellow;
+    wire b_green;
+
+    trafficlight uut (
+        clk,
+        reset,
+        a_red,
+        a_yellow,
+        a_green,
+        b_red,
+        b_yellow,
+        b_green
+    );
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk;
+    end
+
+    initial begin
+        reset = 1;
+        #20;
+        reset = 0;
+        #500;
+        $finish;
+    end
+
+    initial begin
+        $monitor("%t reset=%b state=%b counter=%b a_red=%b a_yellow=%b a_green=%b b_red=%b b_yellow=%b b_green=%b",
+                 $time,
+                 reset,
+                 uut.state,
+                 uut.counter,
+                 a_red,
+                 a_yellow,
+                 a_green,
+                 b_red,
+                 b_yellow,
+                 b_green);
+    end
+
+endmodule
