@@ -1,0 +1,65 @@
+`timescale 1ns / 1ps
+module trafficlight(
+    input clk,
+    input reset,
+    output a_red,
+    output a_yellow,
+    output a_green,
+    output b_red,
+    output b_yellow,
+    output b_green
+    );
+
+    reg [3:0] counter;
+    reg [1:0] state;
+
+    assign a_green  = (state == 2'b00);
+    assign a_yellow = (state == 2'b01);
+    assign a_red    = (state == 2'b10) || (state == 2'b11);
+
+    assign b_red    = (state == 2'b00) || (state == 2'b01);
+    assign b_green  = (state == 2'b10);
+    assign b_yellow = (state == 2'b11);
+
+    always @(posedge clk or posedge reset) begin
+        if (reset) begin
+            state   <= 2'b00;
+            counter <= 4'b0000;
+        end
+        else begin
+            case(state)
+                2'b00: if (counter == 4'b1110) begin
+                            counter <= 4'b0000;
+                            state   <= 2'b01;
+                        end
+                        else begin
+                            counter <= counter + 1;
+                        end
+
+                2'b01: if (counter == 4'b0111) begin
+                            counter <= 4'b0000;
+                            state   <= 2'b10;
+                        end
+                        else begin
+                            counter <= counter + 1;
+                        end
+
+                2'b10: if (counter == 4'b1110) begin
+                            counter <= 4'b0000;
+                            state   <= 2'b11;
+                        end
+                        else begin
+                            counter <= counter + 1;
+                        end
+
+                2'b11: if (counter == 4'b0111) begin
+                            counter <= 4'b0000;
+                            state   <= 2'b00;
+                        end
+                        else begin
+                            counter <= counter + 1;
+                        end
+            endcase
+        end
+    end
+endmodule
